@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// criar migrate yarn prisma migrate dev
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  photo        String?
+  email        String    @unique
+  phone_number String
+  password     String
+  create_at    DateTime? @default(now())
+  update_at    DateTime? @default(now())
+
+  grids Grid[]
+  leads Lead[]
+
+  @@map("users")
+}
+
+model Admin {
+  id        String    @id @default(uuid())
+  password  String
+  email     String    @unique
+  create_at DateTime? @default(now())
+  update_at DateTime? @default(now())
+
+  @@map("admins")
+}
+
+model Grid {
+  id        String    @id @default(uuid())
+  name      String
+  team      String?   @default("")
+  user      User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id   String
+  create_at DateTime? @default(now())
+  update_at DateTime? @default(now())
+
+  tables           Table[]
+  grid_invitations GridInvitations[]
+
+  @@map("grids")
+}
+
+model Table {
+  id              String    @id @default(uuid())
+  name            String
+  order           Int
+  view_conversion Boolean   @default(false)
+  grid            Grid      @relation(fields: [grid_id], references: [id], onDelete: Cascade)
+  grid_id         String
+  create_at       DateTime? @default(now())
+  update_at       DateTime? @default(now())
+
+  leads Lead[]
+
+  @@map("tables")
+}
+
+model Lead {
+  id           String    @id @default(uuid())
+  name         String
+  email        String?   @default("")
+  observation  String?   @default("")
+  phone_number String?   @default("")
+  photo        String?   @default("")
+  value        Float?    @default(0)
+  table        Table     @relation(fields: [table_id], references: [id], onDelete: Cascade)
+  table_id     String
+  user         User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id      String
+  create_at    DateTime? @default(now())
+  update_at    DateTime? @default(now())
+
+  historical Historic[]
+
+  @@map("leads")
+}
+
+model Historic {
+  id        String    @id @default(uuid())
+  name      String
+  lead      Lead      @relation(fields: [lead_id], references: [id], onDelete: Cascade)
+  lead_id   String
+  create_at DateTime? @default(now())
+  update_at DateTime? @default(now())
+
+  @@map("historical")
+}
+
+model GridInvitations {
+  id        String    @id @default(uuid())
+  name      String
+  email     String
+  user_id   String?   @default("")
+  grid      Grid      @relation(fields: [grid_id], references: [id], onDelete: Cascade)
+  grid_id   String
+  status    String    @default("enviado")
+  create_at DateTime? @default(now())
+  update_at DateTime? @default(now())
+
+  @@map("grid_invitations")
+}
+
+model PasswordForgot {
+  id         String    @id @default(uuid())
+  user_email String
+  code       String
+  create_at  DateTime? @default(now())
+  update_at  DateTime? @default(now())
+
+  @@map("passwords_forgot")
+}
