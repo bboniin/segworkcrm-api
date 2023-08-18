@@ -61,71 +61,23 @@ model Table {
 }
 
 model Lead {
-  id               String     @id @default(uuid())
-  name             String
-  email            String?    @default("")
-  phone_number     String?    @default("")
-  photo            String?    @default("")
-  table_id         String
-  user_id          String
-  recurrence       Boolean  
-  date_recurrence  DateTime?  @default(now())  
-  value_recurrence Float?     @default(0)
-  name_recurrence  String?    @default("")   
-  create_at        DateTime?  @default(now())
-  update_at        DateTime?  @default(now())
-  observation      String?    @default("")
-  value            Float?     @default(0)
-  table            Table      @relation(fields: [table_id], references: [id], onDelete: Cascade)
-  user             User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  historical       Historic[]
-  charges          Charge[]
-  recurrences      Recurrence[]
+  id           String     @id @default(uuid())
+  name         String
+  email        String?    @default("")
+  phone_number String?    @default("")
+  photo        String?    @default("")
+  table_id     String
+  user_id      String
+  create_at    DateTime?  @default(now())
+  update_at    DateTime?  @default(now())
+  observation  String?    @default("")
+  value        Float?     @default(0)
+  table        Table      @relation(fields: [table_id], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  historical   Historic[]
 
   @@map("leads")
 }
-
-model RecurrencePlans {
-  id             String    @id @default(uuid())
-  user_id        String
-  name           String
-  period_in_days Int
-  value          Float
-  create_at      DateTime? @default(now())
-  update_at      DateTime? @default(now())
-
-  @@map("recurrence_plans")
-}
-
-model Recurrence {
-  id             String    @id @default(uuid())
-  user_id        String
-  lead_id        String
-  name           String
-  period_in_days Int
-  value          Float
-  create_at      DateTime? @default(now())
-  update_at      DateTime? @default(now())
-  lead           Lead      @relation(fields: [lead_id], references: [id], onDelete: Cascade)
-
-  @@map("recurrences")
-}
-
-model Charge {
-  id          String    @id @default(uuid())
-  user_id     String
-  lead_id     String
-  name        String
-  value       Float
-  date_charge DateTime
-  confirmed   Boolean  
-  create_at   DateTime? @default(now())
-  update_at   DateTime? @default(now())
-  lead        Lead      @relation(fields: [lead_id], references: [id], onDelete: Cascade)
-
-  @@map("charges")
-}
-
 
 model Historic {
   id        String    @id @default(uuid())

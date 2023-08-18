@@ -38,6 +38,18 @@ import { InviteGridController } from './controllers/InviteGrid/InviteGridControl
 import { GetInviteController } from './controllers/InviteGrid/GetInviteController'
 import { DeleteInviteController } from './controllers/InviteGrid/DeleteInviteController'
 import { AcceptInviteController } from './controllers/InviteGrid/AcceptInviteControlleR'
+import { ListChargesController } from './controllers/Charge/ListPlansController'
+import { CreateChargeController } from './controllers/Charge/CreateChargeController'
+import { ConfirmedChargeController } from './controllers/Charge/ConfirmedChargeController'
+import { EditChargeController } from './controllers/Charge/EditChargeController'
+import { DeleteChargeController } from './controllers/Charge/DeleteChargeController'
+import { ListPlansController } from './controllers/Recurrence/ListPlansController'
+import { CreatePlanController } from './controllers/Recurrence/CreatePlanController'
+import { EditPlanController } from './controllers/Recurrence/EditPlanController'
+import { DeletePlanController } from './controllers/Recurrence/DeletePlanController'
+import { ListLeadsRecurrenceController } from './controllers/Recurrence/ListLeadsRecurrenceController'
+import { ListRecurrencesController } from './controllers/Recurrence/ListRecurrencesController'
+import { AddRecurrenceController } from './controllers/Recurrence/AddRecurrenceController'
 
 const upload = multer(uploadConfig)
 
@@ -80,6 +92,23 @@ router.post('/lead', upload.single("file"), new CreateLeadController().handle)
 router.put('/position-lead/:id', new PositionLeadController().handle)
 router.put('/lead/:id', upload.single("file"), new EditLeadController().handle)
 router.delete('/lead/:id', new DeleteLeadController().handle)
+
+router.get('/charges', new ListChargesController().handle)
+router.post('/charge', new CreateChargeController().handle)
+router.get('/confirmed-charge/:id', new ConfirmedChargeController().handle)
+router.put('/charge/:id',  new EditChargeController().handle)
+router.delete('/charge/:id', new DeleteChargeController().handle)
+
+router.get('/plans-recurrence', new ListPlansController().handle)
+router.post('/plan-recurrence', new CreatePlanController().handle)
+router.put('/plan-recurrence/:id',  new EditPlanController().handle)
+router.delete('/plan-recurrence/:id', new DeletePlanController().handle)
+
+router.get('/leads-recurrence', new ListLeadsRecurrenceController().handle)
+router.get('/list-recurrence/:lead_id', new ListRecurrencesController().handle)
+router.post('/add-recurrence/:lead_id', new AddRecurrenceController().handle)
+
+
 
 
 router.get('/admin/users', new ListUsersController().handle)

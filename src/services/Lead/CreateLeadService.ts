@@ -26,7 +26,8 @@ class CreateLeadService {
             email: email,
             observation: observation,
             value: value,
-            phone_number: phone_number
+            phone_number: phone_number,
+            recurrence: false
         }
 
         if (photo) {
