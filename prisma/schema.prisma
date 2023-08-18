@@ -68,7 +68,7 @@ model Lead {
   photo            String?    @default("")
   table_id         String
   user_id          String
-  recurrence       Boolean  
+  recurrence       Boolean    @default(false) 
   date_recurrence  DateTime?  @default(now())  
   value_recurrence Float?     @default(0)
   name_recurrence  String?    @default("")   
